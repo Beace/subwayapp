@@ -1,0 +1,29 @@
+/* Empty. Add your own CSS if you like */
+*{
+	font-family: "黑体","Microsoft Yahei",sans serif;
+}
+.view_title{
+	text-align: center;
+	color: #333;
+}
+.tab_dash_img{
+	width: 100%;
+	height: auto;
+	background: url('../img/bg.jpg') no-repeat top center;
+	background-size: 100% 100%;
+}
+.axis line,
+.axis path{
+	fill:none;
+	shape-rendering:crispEdges;
+	stroke:#333;
+}
+text{
+	font: bold 12px Verdana, Helvetica, Arial, sans-serif;
+}
+
+
+.subway_routes{
+	width: 100%;
+	height: 736px;
+}

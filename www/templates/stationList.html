@@ -1,0 +1,22 @@
+<ion-view view-title="地铁信息">
+  <ion-nav-buttons side="right">
+    <button class="button" ng-click="data.showDelete = !data.showDelete;">删除</button>
+</ion-nav-buttons>
+  <ion-content>
+     <ion-list show-delete="data.showDelete">
+        <ion-item ng-repeat="item in items.subStation" item="item"  class="item-remove-animate" ng-class="{deleteItem:item.status == 'deleteItem'}">
+            {{item.staName}}
+            <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button>
+            <ion-option-button class="button-royal" ng-click="addItem(item)">
+                <i class="icon ion-plus-round"></i>
+            </ion-option-button>
+            <!--<ion-option-button class="button-royal" ng-click="onItemDelete(item)">
+                <i class="icon ion-close-round"></i>
+                </ion-option-button>-->
+             <ion-option-button class="button-royal" ng-click="editItem(item)">
+                <i class="icon ion-edit"></i>
+             </ion-option-button>
+         </ion-item>  
+     </ion-list>
+  </ion-content>
+</ion-view>

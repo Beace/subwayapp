@@ -1,0 +1,12 @@
+<ion-view view-title="添加站点">
+   <ion-content>
+    <ion-list>
+        <ion-item ng-repeat="item in subwayData" data-value="{{item.id}}" href="#/tab/addStation/{{item.id}}">
+            {{item.subName}}
+            <!--<ion-option-button class="button-royal" ng-click="purchasedItem(item)">
+                <i class="icon ion-checkmark"></i>
+                </ion-option-button>-->
+            </ion-item>   
+     </ion-list>
+  </ion-content> 
+</ion-view>

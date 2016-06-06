@@ -1,0 +1,93 @@
+<ion-side-menus>
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-header bar-royal" no-tab-scroll="false" data-tap-disabled="false" align-title="center">
+            <ion-nav-buttons side="left">
+               <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+            </ion-nav-buttons>
+               <ion-nav-back-button></ion-nav-back-button>
+         
+        </ion-nav-bar>
+        <!-- <ion-nav-view name="side-menu" animation="slide-left-right"></ion-nav-view> -->
+
+        <ion-tabs class="tabs-icon-top tabs-color-active-royal" >
+            <ion-tab title="Search" icon-off="ion-ios-pulse" icon-on="ion-ios-pulse-strong" href="#/tab/dash" >
+              <ion-nav-view name="tab-dash"></ion-nav-view>
+            </ion-tab>
+            <ion-tab title="Activities" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/chats">
+              <ion-nav-view name="tab-chats"></ion-nav-view>
+            </ion-tab>
+
+            <ion-tab title="Map" icon-off="ion-ios-location-outline" icon-on="ion-ios-location" href="#/tab/account">
+              <ion-nav-view name="tab-account"></ion-nav-view>
+            </ion-tab>
+
+        </ion-tabs>
+        
+    </ion-side-menu-content>
+    <ion-side-menu side="left" width="230">
+       <ion-header-bar class="bar bar-header bar-royal">
+            <h1 class="title">管理员登陆</h1>
+          </ion-header-bar>
+          <ion-content>
+             
+            <div class="list">
+              <a menu-close class="item item-icon-left" href="#/tab/dash"><i class="icon royal ion-home"></i>首页</a>
+                <div class="item item-driver item-icon-right">
+                    登陆注册
+                    <i class="icon ion-person-stalker"></i>
+                </div>
+                <div menu-close class="item item-driver item-icon-right" ng-show="isLogin">
+                    欢迎您，{{username}}.
+                    <i class="icon royal ion-person"></i>
+                </div>
+              <a menu-close class="item item-icon-left" href="#/tab/login" ng-show="!isLogin">
+                <i class="icon royal ion-log-in"></i>
+                登陆
+              </a>
+              <a menu-close class="item item-icon-left"  ng-show="isLogin" ng-click="logout()" href="#tab/login">
+                <i class="icon royal ion-log-out"></i>
+                登出
+              </a>
+              <a menu-close class="item item-icon-left item-icon-left" href="#/tab/register">
+                <i class="icon royal ion-ios-personadd"></i>
+                
+                注册
+              </a>
+                <div class="item item-driver item-icon-right">
+                    地铁操作
+                    <i class="icon ion-android-subway"></i>
+                </div>
+
+              <a menu-close class="item item-icon-left" href="#/tab/addStation">
+                <i class="icon royal ion-plus-circled"></i>
+                添加站点
+                <span class="item-note">
+                  添加具体站点
+                </span>
+              </a>
+            <a menu-close class="item item-icon-left" href="#/tab/addStation">
+                <i class="icon royal ion-close-circled"></i>
+                删除站点
+                <span class="item-note">
+                  删除具体站点
+                </span>
+              </a>
+              <a menu-close class="item item-icon-left" href="#/tab/addLine">
+                <i class="icon royal ion-plus-round"></i>
+                添加线路
+                <span class="badge badge-assertive">0</span>
+              </a>
+              <a menu-close class="item item-icon-left" href="#/tab/addLine">
+                <i class="icon royal ion-close-round"></i>
+                删除线路
+                <span class="item-note">
+                  谨慎操作
+                </span>
+              </a>
+            </div>
+        
+      </ion-content>
+    
+      
+    </ion-side-menu>
+</ion-side-menus>

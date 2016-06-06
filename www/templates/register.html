@@ -1,0 +1,33 @@
+<ion-view view-title="注册">
+  <ion-nav-buttons side="right" ng-show="!isLogin">
+      <a class="button" href="#/tab/login">登陆</a>
+    </ion-nav-buttons>
+  <ion-content>
+    <form ng-submit="doRegister()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label">用户名</span>
+          <input type="text" ng-model="RegisterData.username" name="registerUsername" id="registerUsername">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">邮箱</span>
+          <input type="text" ng-model="RegisterData.email" name="registerEmail" id="registerEmail">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">密码</span>
+          <input type="password" ng-model="RegisterData.password" name="registerPassword" id="registerPassword">
+        </label>
+        <label class="item item-input">
+          <span class="input-label">再次输入密码</span>
+          <input type="password" ng-model="RegisterData.password" name="registerPassword2" id="registerPassword2">
+        </label>
+        <label class="item">
+          <button class="button button-block button-royal" type="submit">注册</button>
+        </label>
+      </div>
+    </form>
+  </ion-content>
+</ion-view>  
+
+
+
