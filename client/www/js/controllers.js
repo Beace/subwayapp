@@ -2220,10 +2220,10 @@ angular.module('starter.controllers', [])
     $ionicHistory.nextViewOptions({
         disableBack: true
     });
-    $scope.showAlert = function() {
+    $scope.showAlert = function(tel) {
         var alertPopup = $ionicPopup.alert({
             title: '登陆警告',
-            template: '请正确填写用户名和验证码！'
+            template: tel
         });
         alertPopup.then(function(res) {
             console.log('Thank you for not eating my delicious ice cream cone');
@@ -2236,18 +2236,22 @@ angular.module('starter.controllers', [])
         }
 
         if($scope.loginData.username=="" || $scope.loginData.password=="") {
-            $scope.showAlert();
-            console.log($scope.template);
+            $scope.showAlert('用户名和密码不能为空');
+            // console.log($scope.template);
         }else{
-            $http.post('http://localhost:3000/api/user?username='+$scope.loginData.username+'&password='+$scope.loginData.password)
+            $http.post('http://beacelee.com:3000/api/user?username='+$scope.loginData.username+'&password='+$scope.loginData.password)
                 .success(function(data){   
                     console.log(data);
-                    // $window.location.href = "#/tab/addLine";
-                    $rootScope.isLogin = true;
-                    $rootScope.username = $scope.loginData.username;
-                    $rootScope.password = $scope.loginData.password;
-                    // console.log($rootScope.username);
-                    $location.path("#/tab/dash");
+                    if(data.msg) {
+                        // $window.location.href = "#/tab/addLine";
+                        $rootScope.isLogin = true;
+                        $rootScope.username = $scope.loginData.username;
+                        $rootScope.password = $scope.loginData.password;
+                        // console.log($rootScope.username);
+                        $location.path("#/tab/dash");
+                    }else{
+                        $scope.showAlert('用户名或密码错误！');
+                    }
                 }
             )
         }
@@ -2261,7 +2265,7 @@ angular.module('starter.controllers', [])
            
     };
     $scope.doRegister = function() {
-        $http.post('http://localhost:3000/api/admin?username='+$scope.RegisterData.username+'&email='+$scope.RegisterData.email+'&password='+$scope.RegisterData.password)
+        $http.post('http://beacelee.com:3000/api/admin?username='+$scope.RegisterData.username+'&email='+$scope.RegisterData.email+'&password='+$scope.RegisterData.password)
         .success(function(data) {
             if(data){
                 $state.go('tab.login');
@@ -2300,7 +2304,7 @@ angular.module('starter.controllers', [])
 .controller('AddStationCtrl',function($rootScope,$scope,$http){
     // $scope.subwayData = [];
     
-    $http.get('http://localhost:3000/api/all')
+    $http.get('http://beacelee.com:3000/api/all')
     .success(function(data) {
         if(data){
             $scope.subwayData = data;
@@ -2310,31 +2314,60 @@ angular.module('starter.controllers', [])
     // console.log($rootScope.subwayData);
     
 })
-.controller('StationListCtrl', function($scope, $stateParams,$http,$ionicListDelegate) {
-    $http.get('http://localhost:3000/api/list/' + $stateParams.addStationId)
+.controller('StationListCtrl', function($scope, $stateParams,$http,$ionicListDelegate,$ionicPopup,$timeout) {
+    $http.get('http://beacelee.com:3000/api/list/' + $stateParams.addStationId)
     .success(function(data) {
         if(data){
             $scope.items = data[0];
             console.log($scope.items);
         }
-    })
+    });
     $scope.data = {
         showDelete: false
     };
-    $scope.addItem = function(items) {
-        var staNname = prompt('填写要在此站点之后添加的站点');
-        if(staNname) {
-            $scope.items.subStation.push({
-                'staNname':name
-            });
+
+    //popup
+    $scope.showPopup = function(title,subTitle,item,html,text) {
+        $scope.dataPopup = {};
+        var itemsPopup = $ionicPopup.show({
+            template:html,
+            title: title,
+            subTitle: subTitle,
+            scope: $scope,
+            buttons:[
+                {text:text,
+                type: 'button-positive'}
+            ]
+        });
+        // itemsPopup.then(function(res) {
+        //     console.log('Tapped!', res);
+        //     $scope.staName = res;
+        //     console.log(item);
+        // });
+        /*$timeout(function() {
+            itemsPopup.close(); //close the popup after 3 seconds for some reason
+        }, 3000);*/
+        
+    };
+    $scope.showDetail = function(item) {
+        $scope.item = item;
+        var html = '<div style="text-align:left;font-family:"黑体""><p><b>站点ID：</b>'+item.staId+'</p><p><b>站点名：</b>'+item.staName+'</p><p><b>可换乘站：</b>'+(item.transfer ? item.transfer+'号线' : '不可换乘')+'</p><p><b>站点信息：</b>有如家、7天多家连锁酒店</p></div>';
+        $scope.showPopup("站点信息","查看详情",item,html,"了解了");
+    }
+    $scope.addItem = function(item) {
+        $scope.item = item;
+        var staName = prompt('填写要在此站点之后添加的站点');
+        console.log(staName);
+        console.log(item);
+        if(staName) {
+            $scope.items.subStation.splice(item.staId-1,0,{'staName':staName});
         }
         $ionicListDelegate.closeOptionButtons(); 
     }
-     $scope.moveItem = function(item, fromIndex, toIndex) {
+    $scope.moveItem = function(item, fromIndex, toIndex) {
         $scope.items.splice(fromIndex, 1);
         $scope.items.splice(toIndex, 0, item);
     };
-        
     $scope.onItemDelete = function(item) {
         $scope.item = item;
         $scope.items.subStation.splice($scope.items.subStation.indexOf(item), 1);
@@ -2342,17 +2375,12 @@ angular.module('starter.controllers', [])
     $scope.deleteItem = function(item) {
         $scope.item = item;
         $scope.item['status'] = 'deleteItem';
-       
         $ionicListDelegate.closeOptionButtons();
     }
     $scope.editItem = function(item) {
-        var staNname = prompt('填写需要修改的信息');
-        if(staNname) {
-            $scope.items.subStation.push({
-                'staNname':name
-            });
-        }
-        
+        $scope.item = item;
+        var html = '<div class="list"><label class="item item-input item-stacked-label"><span class="input-label">站点名</span><input type="text" placeholder="站点名" value='+item.staName+' ng-model="item.staName"></label><label class="item item-input item-stacked-label"><span class="input-label">可换乘线路</span><input type="text" placeholder="可换乘线路" value='+(item.transfer ? item.transfer : '0')+' ng-model="item.transfer"></label><label class="item item-input item-stacked-label"><span class="input-label">站点信息</span><input type="text" value="有如家7天多家连锁酒店"></label></div>';
+        $scope.showPopup("修改信息","修改站点信息",item,html,"修改");
         $ionicListDelegate.closeOptionButtons();
     }
 })

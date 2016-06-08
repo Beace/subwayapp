@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, $ionicModal,$ionicPopup,$timeout) {
+.controller('DashCtrl', function($scope, $ionicModal,$ionicPopup,$timeout,$compile) {
       // Form data for the login modal
     $ionicModal.fromTemplateUrl('my-modal.html', {
         scope: $scope,
@@ -20,6 +20,7 @@ angular.module('starter.controllers', [])
 
     $scope.openModal = function(dataset) {
         
+           
         var start = document.getElementById('start').value, //获取用户输入的初始站值
             end = document.getElementById('end').value; //获取用户输入的终点站值
         var path = document.getElementById('path');
@@ -77,7 +78,6 @@ angular.module('starter.controllers', [])
                 }
                 
             }else{
-                var stationsNum = 0;
                 for(var i = 0; i < dataset.length; i ++) {
                     if(dataset[i].id == startLineValue) {
                         startLineObj = dataset[i];
@@ -101,10 +101,10 @@ angular.module('starter.controllers', [])
                 for(var i = 0; i < transferSta.length; i ++) {                  
                     if(startStationsValue > transferSta[i].staId) {
                         halfSingleLinePath.push(startLineObj.subStation.slice(transferSta[i].staId - 1 ,startStationsValue).reverse());
-                        stationsNum = Math.abs(startStationsValue - transferSta[i].staId);                       
+                        $scope.stationsNum = Math.abs(startStationsValue - transferSta[i].staId);                       
                     }else{
                         halfSingleLinePath.push(startLineObj.subStation.slice(startStationsValue - 1,transferSta[i].staId));
-                        stationsNum = Math.abs(startStationsValue - transferSta[i].staId);
+                        $scope.stationsNum = Math.abs(startStationsValue - transferSta[i].staId);
                     }
                 }
 
@@ -121,67 +121,30 @@ angular.module('starter.controllers', [])
                 for(var i = 0; i < anotherIndex.length; i ++) {
                     if(anotherIndex[i].staId > endStationsValue) {
                         anotherHalfSingleLinePath.push(endLineObj.subStation.slice(endStationsValue - 1,anotherIndex[i].staId).reverse());                      
-                        stationsNum = Math.abs(anotherIndex[i].staId - endStationsValue);
+                       
                                 
                     }else{
                         anotherHalfSingleLinePath.push(endLineObj.subStation.slice(anotherIndex[i].staId - 1,endStationsValue));
-                        stationsNum = Math.abs(anotherIndex[i].staId - endStationsValue);
+                       
                        
                     }
                 }
                 for(var i = 0; i < halfSingleLinePath.length; i ++) {
                     for(var j = 0; j < anotherHalfSingleLinePath.length; j ++) {
                         if(i == j) {
-                            console.log(halfSingleLinePath[i]);
-                            console.log(anotherHalfSingleLinePath[j]);
                             findSingleLinePath.push(halfSingleLinePath[i].concat(anotherHalfSingleLinePath[j]));
-                            console.log(findSingleLinePath);
                         }
                     }
                 }
                 $scope.modal.show();
-                console.log(findSingleLinePath);
-                consoleSingleShortPath(findSingleLinePath,stationsNum,endLineValue);
-                function consoleSingleShortPath(findSingleLinePath,stationsNum,endLineValue){  
-                    var path = document.getElementById('path');
-                    var html = "";
-                    for(var i = 0; i < findSingleLinePath.length; i++){
-                        html += "<div class='list card'>";
-                        html += "<div class='item item-avatar'>";
-                        html += "<img src='../img/subway.png'>";
-                        html += "<h2 style='font-family:'Microsoft YaHei Light UI'>乘坐" + startLineValue + "号线</h2>";
-                        html += "<p>共" + (findSingleLinePath[i].length - 1) + "站</p>";
-                        html += "</div>";
-                        
-                        html += "<div class='item item-body'>";
-                        html += "<ul class='list'>";
-                        var li = "";
-                        for (var x = 0; x < findSingleLinePath[i].length; x++) {
-                            if (x == findSingleLinePath.length - 1) {
-                                console.log(findSingleLinePath[i][x].staName);
-                                li += "<li class='item item-icon-left'><i class='icon ion-android-subway'></i>" + findSingleLinePath[i][x].staName + "</li>";
-                            } else {
-                                // if (findSingleLinePath[i][x].staName == findSingleLinePath[i][x+1].staName) {
-                                //     li += "<li class='item item-icon-left'><i class='icon ion-ios-loop-strong'></i>在" + findSingleLinePath[i][x].staName + "换乘" + endLineValue + "号线</li>";
-                                // } else {
-                                    li += "<li class='item item-icon-left'><i class='icon ion-android-subway'></i>" + findSingleLinePath[i][x].staName + "-></li>";
-                                // }
-
-                            }
-                        }
-
-                        html += li + "</ul><p><a class='subdued'>车站信息：ATM，共三个出入口，附近有如家、7天多家连锁酒店</a></p></div><a class='button button-block icon-right ion-chevron-down button-stable'>展开具体路线</a></div>";
-                    }
-                    console.log(html);
-                    path.innerHTML = html;
-                }
-
+                $scope.findSingleLinePath = findSingleLinePath;
+                $scope.endLineValue = endLineValue;
+                $scope.startLineValue = startLineValue;
+                $scope.interpretation = {};
             }
         }
-
-
         
-
+        // $scope.showList();
         var dataStart = [], //查找到所有包含初始站线路的存放数组
             dataEnd = []; //查找到所有包含终点站线路的存放数组
 
@@ -515,6 +478,43 @@ angular.module('starter.controllers', [])
             path.innerHTML = html;
         }
     };
+    $scope.showList = function() {
+        // var list = document.getElementsByClassName('the-way');
+        alert(1111);
+    }
+    //自动选择路线多条路线输出
+    $scope.consoleSingleShortPath = function(scope,findSingleLinePath,stationsNum,endLineValue,startLineValue){         
+        var path = document.getElementById('path');
+        var html = "";
+        for(var i = 0; i < findSingleLinePath.length; i++){
+            html += "<div class='list card'>";
+            html += "<div class='item item-avatar the-way'>";
+            html += "<img src='../img/subway.png'>";
+            html += "<h2 style='font-family:'Microsoft YaHei Light UI'>乘坐" + startLineValue + "号线</h2>";
+            html += "<p>共" + (findSingleLinePath[i].length - 1) + "站</p>";
+            html += "</div>";
+            html += "<div class='item item-body'>";
+            html += "<ul class='list'>";
+            var li = "";
+            for (var x = 0; x < findSingleLinePath[i].length; x++) {
+                if (x == findSingleLinePath.length - 1) {
+                    console.log(findSingleLinePath[i][x].staName);
+                    li += "<li class='item item-icon-left'><i class='icon ion-android-subway'></i>" + findSingleLinePath[i][x].staName + "</li>";
+                } else {
+                    // if (findSingleLinePath[i][x].staName == findSingleLinePath[i][x+1].staName) {
+                    //     li += "<li class='item item-icon-left'><i class='icon ion-ios-loop-strong'></i>在" + findSingleLinePath[i][x].staName + "换乘" + endLineValue + "号线</li>";
+                    // } else {
+                        li += "<li class='item item-icon-left'><i class='icon ion-android-subway'></i>" + findSingleLinePath[i][x].staName + "-></li>";
+                    // }
+
+                }
+            }
+            html += li + "</ul><p><a class='subdued'>车站信息：ATM，共三个出入口，附近有如家、7天多家连锁酒店</a></p></div><div ng-click='showList()'><button class='button button-block icon-right ion-chevron-down button-stable show-list'>展开具体路线</button></div></div>";
+        }
+        var el = $compile(html)(scope);
+        console.log(el);
+        path.innerHTML = el[0].innerHTML;
+    }
     $scope.closeModal = function() {
         $scope.modal.hide();
     };
@@ -530,6 +530,10 @@ angular.module('starter.controllers', [])
     $scope.$on('modal.removed', function() {
         // Execute action
     });
+    $scope.isShow = false;
+    $scope.wf = function(){
+        $scope.isShow = !$scope.isShow;
+    }
     $scope.dataset = [{
         id: 1,
         subName: '一号线',

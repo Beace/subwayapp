@@ -4,7 +4,7 @@
 </ion-nav-buttons>
   <ion-content>
      <ion-list show-delete="data.showDelete">
-        <ion-item ng-repeat="item in items.subStation" item="item"  class="item-remove-animate" ng-class="{deleteItem:item.status == 'deleteItem'}">
+        <ion-item ng-repeat="item in items.subStation" item="item"  class="item-remove-animate" ng-class="{deleteItem:item.status == 'deleteItem'}" ng-click="showDetail(item)">
             {{item.staName}}
             <ion-delete-button class="ion-minus-circled" ng-click="onItemDelete(item)"></ion-delete-button>
             <ion-option-button class="button-royal" ng-click="addItem(item)">

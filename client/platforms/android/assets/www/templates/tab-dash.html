@@ -64,9 +64,24 @@
                      <button class="button button-clear" ng-click="closeModal()">Close</button>
                 </ion-header-bar>
                 <ion-content>
-                    <div id="path"></div>
-                    
-                    
+                    <div id="path">
+                      <div class="list card" ng-repeat="path in findSingleLinePath track by $index">
+                        <div class="item item-avatar">
+                            <img src="../img/subway.png">
+                            <h2>乘坐{{startLineValue}}号线</h2>
+                            <p>{{$index}}</p>
+                            <p>共{{path.length-1}}站，换乘{{endLineValue}}号线</p>
+                            </div>
+                            <div class="item item-body">
+                            <ul class="list" ng-show="isShow">
+                                <li class="item item-icon-left" ng-repeat="item in path"><i class="icon ion-android-subway"></i>{{item.staName}}</li>
+                            </ul>
+                            <p><p><a class='subdued'>车站信息：ATM，共三个出入口，附近有如家、7天多家连锁酒店</a></p></div>
+                            <div ng-click="wf()">
+                              <button class='button button-block icon-right ion-chevron-down button-stable show-list'>展开具体路线</button>
+                            </div>
+                        </div>
+                    </div>                    
                 </ion-content>
               </ion-modal-view>
         </script>
