@@ -67,14 +67,16 @@
                     <div id="path">
                       <div class="list card" ng-repeat="path in findSingleLinePath track by $index">
                         <div class="item item-avatar">
-                            <img src="../img/subway.png">
-                            <h2>乘坐{{startLineValue}}号线</h2>
-                            <p>{{$index}}</p>
-                            <p>共{{path.length-1}}站，换乘{{endLineValue}}号线</p>
+                            <img src="https://beacelee.com/upload/images/subway.png">
+                            <h2>乘坐<b>{{startLineValue}}号线</b></h2>
+                            <p>共<b>{{path.length-1}}</b>站，换乘<b>{{endLineValue}}</b>号线</p>
                             </div>
                             <div class="item item-body">
                             <ul class="list" ng-show="isShow">
-                                <li class="item item-icon-left" ng-repeat="item in path"><i class="icon ion-android-subway"></i>{{item.staName}}</li>
+                                <div class="item item-icon-left" ng-repeat="item in path">
+                                  <li ng-show="!item.transport"><i class="icon ion-android-subway"></i>{{item.staName}}</li>
+                                  <li ng-show="item.transport == true"><i class='icon ion-ios-loop-strong'></i>在<b>{{item.staName}}</b>换<b>乘{{endLineValue}}</b>号线</li>
+                                </div>
                             </ul>
                             <p><p><a class='subdued'>车站信息：ATM，共三个出入口，附近有如家、7天多家连锁酒店</a></p></div>
                             <div ng-click="wf()">

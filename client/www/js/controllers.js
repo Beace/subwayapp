@@ -11,10 +11,10 @@ angular.module('starter.controllers', [])
     $scope.showAlert = function() {
         var alertPopup = $ionicPopup.alert({
             title: '请正确填写站名',
-            template: '请检查站名是否填写，如果填写请确认是否填写正确'
+            template: '请检查站名是否填写，如果填写请确认是否填写正确!'
         });
         alertPopup.then(function(res) {
-            console.log('Thank you for not eating my delicious ice cream cone');
+            console.log('弹出警告！');
         });
     };
 
@@ -121,14 +121,21 @@ angular.module('starter.controllers', [])
                 for(var i = 0; i < anotherIndex.length; i ++) {
                     if(anotherIndex[i].staId > endStationsValue) {
                         anotherHalfSingleLinePath.push(endLineObj.subStation.slice(endStationsValue - 1,anotherIndex[i].staId).reverse());                      
-                       
                                 
                     }else{
-                        anotherHalfSingleLinePath.push(endLineObj.subStation.slice(anotherIndex[i].staId - 1,endStationsValue));
-                       
-                       
+                        anotherHalfSingleLinePath.push(endLineObj.subStation.slice(anotherIndex[i].staId - 1,endStationsValue));  
                     }
                 }
+                for(var i = 0; i < anotherHalfSingleLinePath.length; i ++){
+                    for(var j = 0 ; j < anotherHalfSingleLinePath[i].length; j ++){
+                        if(anotherHalfSingleLinePath[i][j].transport) {
+                            anotherHalfSingleLinePath[i][j].transport = false;
+                        }
+                        
+                        anotherHalfSingleLinePath[i][0].transport = true;
+                    }
+                }
+                
                 for(var i = 0; i < halfSingleLinePath.length; i ++) {
                     for(var j = 0; j < anotherHalfSingleLinePath.length; j ++) {
                         if(i == j) {
@@ -137,10 +144,16 @@ angular.module('starter.controllers', [])
                     }
                 }
                 $scope.modal.show();
+
                 $scope.findSingleLinePath = findSingleLinePath;
                 $scope.endLineValue = endLineValue;
                 $scope.startLineValue = startLineValue;
-                $scope.interpretation = {};
+                
+                $scope.transferStation2 = transferSta;
+                
+
+                console.log(anotherHalfSingleLinePath);
+
             }
         }
         
@@ -359,6 +372,26 @@ angular.module('starter.controllers', [])
                 consoleFinalPaths(finalPaths);
             }
         }
+      /*  $scope.listClick = function() {
+        }*/
+            var showlists = document.querySelectorAll(".show-list");
+            var ullists = document.querySelectorAll(".ul-list");
+            var isShow = false;
+            for(var i = 0;i < showlists.length; i++) {
+                (function(i){
+                    showlists[i].onclick = function() {
+                        if(isShow) {
+                            ullists[i].style.display = "block";
+                            isShow = !isShow;
+                        }else{
+                            ullists[i].style.display = "none";
+                            isShow = !isShow;
+                        }
+                        
+                    }
+                })(i);
+            }
+        
 
         function consoleFinalPaths(finalPaths) {
             var path = document.getElementById('path');
@@ -371,7 +404,7 @@ angular.module('starter.controllers', [])
                 html += "<p>共" + (finalPaths[i].length - 1) + "站，从左边车门下车，下车请注意安全。</p>";
                 html += "</div>";
                 html += "<div class='item item-body'>";
-                html += "<ul class='list'>";
+                html += "<ul class='list ul-list' style='display:none'>";
                 var li = "";
                 for (var j = 0; j < finalPaths[i].length; j++) {
                     if (j == finalPaths[i].length - 1) {
@@ -385,7 +418,7 @@ angular.module('starter.controllers', [])
                         }
                     }
                 }
-                html += li + "</ul><p><a class='subdued'>车站信息：ATM" + (i + 1) + "个，共" + i + "个出入口，附近有如家、7天多家连锁酒店</a></p></div></div>";
+                html += li + "</ul><p><a class='subdued'>车站信息：ATM" + (i + 1) + "个，共" + i + "个出入口，附近有如家、7天多家连锁酒店</a></p></div><button class='button button-block icon-right ion-chevron-down button-stable show-list' style='font-family:Micorsoft Yahei UI Light'>展开具体路线</button></div>";
 
             }
             path.innerHTML = html;
@@ -489,7 +522,7 @@ angular.module('starter.controllers', [])
         for(var i = 0; i < findSingleLinePath.length; i++){
             html += "<div class='list card'>";
             html += "<div class='item item-avatar the-way'>";
-            html += "<img src='../img/subway.png'>";
+            html += "<img src='https:beacelee.com/upload/images/subway.png'>";
             html += "<h2 style='font-family:'Microsoft YaHei Light UI'>乘坐" + startLineValue + "号线</h2>";
             html += "<p>共" + (findSingleLinePath[i].length - 1) + "站</p>";
             html += "</div>";
@@ -2183,11 +2216,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ChatsCtrl', function($scope, Chats) {
-    // With the new view caching in Ionic, Controllers are only called
-    // when they are recreated or on app start, instead of every page change.
-    // To listen for when this page is active (for example, to refresh data),
-    // listen for the $ionicView.enter event:
-    //
     //$scope.$on('$ionicView.enter', function(e) {
     //});
 
