@@ -12,8 +12,10 @@ Subway App by Ioinc and Cordova
  - 路线数据管理（增删改查）
  - 登陆注册
  
-![img](https://images-manager.oss-cn-shanghai.aliyuncs.com/subway/subway-home.jpg)
-![img](https://images-manager.oss-cn-shanghai.aliyuncs.com/subway/subway-detail.jpg)
+
+# overview both Android and IOS
+
+![](https://images-manager.oss-cn-shanghai.aliyuncs.com/static/subway/ios-android/1-1.png)
 
 # Client
 
