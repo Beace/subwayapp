@@ -15,7 +15,7 @@ Subway App by Ioinc and Cordova
 
 # overview both Android and IOS
 
-![](https://images-manager.oss-cn-shanghai.aliyuncs.com/static/subway/ios-android/1-1.png)
+![](https://images-manager.oss-cn-shanghai.aliyuncs.com/static/subway/ios-android/1-1.jpg)
 
 # Client
 
