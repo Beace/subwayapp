@@ -1,5 +1,8 @@
 # subwayapp
 Subway App by Ioinc and Cordova
+
+![](https://images-manager.oss-cn-shanghai.aliyuncs.com/static/subway/ios-android/1-1.jpg)
+
 # 这是什么？
 这是一个可以查询上海地铁路线的App，你可以：
  - 自动路线查询
@@ -13,9 +16,15 @@ Subway App by Ioinc and Cordova
  - 登陆注册
  
 
-# overview both Android and IOS
+# Overview both Android and IOS
 
-![](https://images-manager.oss-cn-shanghai.aliyuncs.com/static/subway/ios-android/1-1.jpg)
+## Search Subway Line
+
+![](https://images-manager.oss-cn-shanghai.aliyuncs.com/static/subway/ios-android/1-6.jpg)
+
+## Baidu Map SDK
+
+![](https://images-manager.oss-cn-shanghai.aliyuncs.com/static/subway/ios-android/1-11.jpg)
 
 # Client
 
